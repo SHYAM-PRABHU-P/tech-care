@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TECH CARE - Phone Repair</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Comic Sans MS", "Comic Sans", cursive, sans-serif;
+            color: white;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* ==================== HIDE SCROLLBAR ==================== */
+        html {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        html::-webkit-scrollbar { display: none; }
+        body::-webkit-scrollbar { display: none; }
+
+        /* ==================== STICKY NAVBAR ==================== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(12px);
+            z-index: 10000;
+            padding: 15px 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transform: translateY(-100%);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .navbar.active {
+            transform: translateY(0);
+        }
+
+        .nav-logo {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.85rem;
+            font-weight: 400;
+            letter-spacing: 4px;
+            color: white;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.15rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            color: #ffd700;
+        }
+
+        .nav-btn {
+            background: #ffd700;
+            color: #111;
+            padding: 12px 32px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* ==================== HERO SECTION ==================== */
+        .hero {
+            height: 100vh;
+            min-height: 700px;
+            background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.85)), 
+                        url(bg.jpg) center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .content {
+            text-align: center;
+            max-width: 900px;
+            padding: 0 20px;
+            z-index: 2;
+            margin-top: -155px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: -2px;
+            margin-bottom: 35px;
+        }
+
+        .logo-text {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 2.35rem;
+            font-weight: 400;
+            letter-spacing: 3px;
+            color: white;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+            margin-top: 2px;
+            margin-left: -8px;
+            margin-bottom: 40px;
+        }
+
+        .headline {
+            font-size: 3.1rem;
+            font-weight: 600;
+            line-height: 1.05;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.6);
+            font-family: "Comic Sans MS", "Comic Sans", cursive, sans-serif;
+        }
+
+        .subtitle {
+            font-size: 1.35rem;
+            margin-bottom: 40px;
+            opacity: 0.56;
+            font-family: "Comic Sans MS", "Comic Sans", cursive, sans-serif;
+            font-style: italic;
+        }
+
+        .btn {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            padding: 16px 60px;
+            font-size: 1.35rem;
+            font-weight: 200;
+            border: 2px solid rgba(255,255,255,0.4);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            font-family: "Comic Sans MS", "Comic Sans", cursive, sans-serif;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-4px);
+        }
+
+        /* ==================== MARQUEE ==================== */
+        .brands {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            padding: 0 90px;
+        }
+
+        .brands-track {
+            display: inline-flex;
+            align-items: center;
+            gap: 65px;
+            animation: marquee 28s linear infinite;
+            width: max-content;
+        }
+
+        .brand {
+            height: 36px;
+            width: auto;
+            filter: brightness(1.2);
+        }
+
+        .brand-apple {
+            height: 146px;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .brands:hover .brands-track {
+            animation-play-state: paused;
+        }
+
+        /* ==================== SCROLLABLE SECTIONS ==================== */
+        .section {
+            padding: 100px 5%;
+            position: relative;
+        }
+
+        .dark-section {
+            background: #111111;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-size: 2.8rem;
+            text-align: center;
+            margin-bottom: 60px;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.6);
+        }
+
+        .who-we-are {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .who-text h3 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: #ffd700;
+        }
+
+        .who-text p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        .who-image {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+
+        .who-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .who-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: rgba(255,255,255,0.08);
+            padding: 40px 30px;
+            border-radius: 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .service-card:hover {
+            background: rgba(255,215,0,0.15);
+            transform: translateY(-10px);
+        }
+
+        .service-card h3 {
+            font-size: 1.6rem;
+            margin: 20px 0 15px;
+            color: #ffd700;
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+        }
+
+        .why-item {
+            display: flex;
+            gap: 20px;
+        }
+
+        .why-number {
+            font-size: 4rem;
+            font-weight: 700;
+            color: #ffd700;
+            opacity: 0.3;
+            line-height: 1;
+        }
+
+        .why-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .final-cta {
+            background: linear-gradient(90deg, #111, #222);
+            text-align: center;
+            padding: 120px 20px;
+        }
+
+        .final-cta h2 {
+            font-size: 3rem;
+            margin-bottom: 30px;
+        }
+
+        .final-btn {
+            background: #ffd700;
+            color: #111;
+            padding: 20px 80px;
+            font-size: 1.6rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content { margin-top: -100px; }
+            .headline { font-size: 2.6rem; }
+            .logo-text { font-size: 1.95rem; margin-left: -6px; }
+            .brands { bottom: 45px; padding: 0 40px; }
+            .brands-track { gap: 55px; }
+            .brand { height: 30px; }
+            .brand-apple { height: 38px; }
+            
+            .navbar { padding: 12px 5%; }
+            .nav-logo { font-size: 1.6rem; }
+            .nav-menu { gap: 20px; }
+            .nav-menu a { font-size: 1rem; }
+            
+            .who-we-are {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            h2 { font-size: 2.2rem; }
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(42, 34, 34, 0.322);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 9999;
+            color: white;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-top: 5px solid #ffd700;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== STICKY NAVBAR (Home added) ==================== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-logo">TECH CARE</div>
+        
+        <div class="nav-menu">
+            <a href="#">Home</a>
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+            <a href="#why">Why Us</a>
+        </div>
+        
+        <button class="nav-btn" onclick="showLoading()">Book Repair Now</button>
+    </nav>
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <section class="hero">
+        <div class="content">
+            <div class="logo-container">
+                <div class="logo-text">TECH CARE</div>
+            </div>
+            <h1 class="headline">Why Replace when you can Repair?</h1>
+            <p class="subtitle">Your Local Tech. Picked Up. Fixed. Delivered.</p>
+            <button class="btn" onclick="showLoading()">
+                Get Started
+            </button>
+        </div>
+
+        <!-- Marquee -->
+        <div class="brands">
+            <div class="brands-track">
+                <img src="assets/images/samsung.png" alt="SAMSUNG" class="brand">
+                <img src="assets/images/Vivo-Logo.png" alt="vivo" class="brand">
+                <img src="assets/images/iphone.png" alt="iPhone" class="brand brand-apple">
+                <img src="assets/images/huvawei.png" alt="HUAWEI" class="brand">
+                <img src="assets/images/samsung.png" alt="SAMSUNG" class="brand">
+                <img src="assets/images/Vivo-Logo.png" alt="vivo" class="brand">
+                <img src="iassets/images/phone.png" alt="iPhone" class="brand brand-apple">
+                <img src="assets/images/huvawei.png" alt="HUAWEI" class="brand">
+                <img src="assets/images/samsung.png" alt="SAMSUNG" class="brand">
+                <img src="assets/images/Vivo-Logo.png" alt="vivo" class="brand">
+                <img src="assets/images/iphone.png" alt="iPhone" class="brand brand-apple">
+                <img src="assets/images/huvawei.png" alt="HUAWEI" class="brand">
+                <img src="assets/images/samsung.png" alt="SAMSUNG" class="brand">
+                <img src="assets/images/Vivo-Logo.png" alt="vivo" class="brand">
+                <img src="assets/images/iphone.png" alt="iPhone" class="brand brand-apple">
+                <img src="assets/images/huvawei.png" alt="HUAWEI" class="brand">
+                <img src="assets/images/samsung.png" alt="SAMSUNG" class="brand">
+            </div>
+        </div>
+
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="spinner"></div>
+            <div class="loading-text">Get Started...</div>
+        </div>
+    </section>
+
+    <!-- ==================== REST OF THE PAGE (unchanged) ==================== -->
+    <section class="section dark-section" id="about">
+        <div class="container">
+            <div class="who-we-are">
+                <div class="who-image">
+                    <img src="https://picsum.photos/id/1015/800/600" alt="Tech Care Workshop" 
+                         onerror="this.src='https://via.placeholder.com/800x600/222/ffd700?text=TECH+CARE+SHOP';">
+                </div>
+                <div class="who-text">
+                    <h3 style="color:#ffd700; font-size:1.4rem; letter-spacing:4px;">WHO WE ARE</h3>
+                    <h2 style="text-align:left; font-size:2.8rem;">Expert Phone Repair,<br>Done Right.</h2>
+                    <p>At TECH CARE, we believe your phone deserves better than being thrown away. Our certified technicians use genuine parts and the latest tools to bring your device back to life — fast, affordable, and with a 90-day warranty.</p>
+                    <p>From screen replacements and battery upgrades to water damage recovery and software fixes, we handle every major brand with care and precision.</p>
+                    <button onclick="document.getElementById('services').scrollIntoView({ behavior: 'smooth' })" 
+                            style="background:#ffd700; color:#111; padding:15px 50px; border:none; border-radius:50px; font-size:1.3rem; cursor:pointer;">
+                        See Our Services →
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="services" style="background:#1a1a1a;">
+        <div class="container">
+            <h2>Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card"><h3>Screen Replacement</h3><p>Cracked or shattered? We replace it in under 45 minutes with original-quality glass.</p></div>
+                <div class="service-card"><h3>Battery Replacement</h3><p>Is your phone dying too fast? Get a fresh battery and 100% health again.</p></div>
+                <div class="service-card"><h3>Water Damage Repair</h3><p>Spilled coffee? Dropped in the sink? We revive water-damaged phones daily.</p></div>
+                <div class="service-card"><h3>Camera Fix</h3><p>Blurry photos or broken lenses? We fix front & rear cameras.</p></div>
+                <div class="service-card"><h3>Charging Port Repair</h3><p>No more wiggling the cable — we replace faulty ports in minutes.</p></div>
+                <div class="service-card"><h3>Software & Unlocking</h3><p>iOS/Android issues, factory reset, or carrier unlocking — we’ve got you.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section dark-section" id="why">
+        <div class="container">
+            <h2>Why Customers Love TECH CARE</h2>
+            <div class="why-grid">
+                <div class="why-item"><div class="why-number">01</div><div class="why-content"><h3>Free Pickup & Delivery</h3><p>We come to you in Karur & surrounding areas. No need to leave home.</p></div></div>
+                <div class="why-item"><div class="why-number">02</div><div class="why-content"><h3>90-Day Warranty</h3><p>All repairs are backed by our solid guarantee. Peace of mind included.</p></div></div>
+                <div class="why-item"><div class="why-number">03</div><div class="why-content"><h3>Genuine Parts Only</h3><p>We never use cheap knock-offs. Only original or OEM-quality parts.</p></div></div>
+                <div class="why-item"><div class="why-number">04</div><div class="why-content"><h3>Same-Day Service</h3><p>Most repairs are completed the same day you book.</p></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="final-cta">
+        <div class="container">
+            <h2>Ready to Fix Your Phone?</h2>
+            <p style="font-size:1.4rem; opacity:0.8; max-width:700px; margin:0 auto 40px;">Get a free diagnosis in under 2 minutes. Just click below and we’ll handle the rest.</p>
+            <button class="final-btn" onclick="showLoading()">BOOK YOUR REPAIR NOW</button>
+        </div>
+    </section>
+
+    <script>
+        const navbar = document.getElementById('navbar');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) {
+                navbar.classList.add('active');
+            } else {
+                navbar.classList.remove('active');
+            }
+        });
+
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        
+        function showLoading() {
+            loadingOverlay.style.display = 'flex';
+            setTimeout(() => {
+                window.location.href = 'third.html';
+            }, 1200);
+        }
+
+        // Smooth scrolling for all nav links
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (this.getAttribute('href') === '#') {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
