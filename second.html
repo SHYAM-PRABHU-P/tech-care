@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TECH CARE - Create Account</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.75)), 
+                        url(assets/images/bg2.png) center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .header {
+            position: absolute;
+            top: 0; left: 0; width: 100%;
+            background: #0a1f3d;
+            padding: 25px 40px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 10;
+        }
+
+        .logo { width: 42px; height: 42px; }
+
+        .header-text {
+            color: white;
+            font-size: 1.65rem;
+            font-weight: 200;
+            letter-spacing: 1px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .form-container {
+            background: white;
+            width: 100%;
+            max-width: 640px;
+            border-radius: 20px;
+            padding: 45px 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            z-index: 5;
+            margin-top: 135px;
+        }
+
+        .form-title {
+            text-align: center;
+            font-size: 1.55rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #111;
+        }
+
+        .input-group {
+            margin-bottom: 22px;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 18px;
+            border: none;
+            background: #f1f3f6;
+            border-radius: 50px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            background: #e8ebf0;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 1.35rem;
+            color: #666;
+        }
+
+        .create-btn {
+            width: 100%;
+            background: #ffd700;
+            color: #111;
+            border: none;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: all 0.3s;
+        }
+
+        .create-btn:hover {
+            background: #ffcc00;
+            transform: translateY(-2px);
+        }
+
+        .login-text {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 0.95rem;
+        }
+
+        .login-text a {
+            color: #e60012;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .or-divider {
+            text-align: center;
+            margin: 25px 0;
+            color: #888;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        .or-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0; right: 0;
+            height: 1px;
+            background: #ddd;
+        }
+
+        .or-divider span {
+            background: white;
+            padding: 0 15px;
+        }
+
+        .google-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 50px;
+            background: white;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .google-btn:hover {
+            border-color: #4285f4;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(66, 133, 244, 0.2);
+        }
+
+        .google-btn img { width: 24px; }
+
+        .attribution {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.75rem;
+            color: #999;
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 9999;
+            color: #111;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(0,0,0,0.1);
+            border-top: 5px solid #ffd700;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <img src="https://i.imgur.com/9NUtz.png" alt="Tech Care Logo" class="logo">
+        <div class="header-text">TECH CARE</div>
+    </div>
+
+    <!-- Form Card -->
+    <div class="form-container">
+        <h2 class="form-title">Create your Free Account</h2>
+        
+        <div class="input-group">
+            <label>Full Name</label>
+            <input type="text" id="fullName" placeholder="Enter your Full Name here">
+        </div>
+
+        <div class="input-group">
+            <label>Email</label>
+            <input type="email" id="email" placeholder="Enter your Email here">
+        </div>
+
+        <div class="input-group">
+            <label>Password</label>
+            <div style="position: relative;">
+                <input type="password" id="passwordInput" placeholder="Enter your Password here">
+                <span class="toggle-password" id="togglePassword">👁️</span>
+            </div>
+        </div>
+
+        <button class="create-btn" onclick="createAccount()">Create Account</button>
+
+        <div class="login-text">
+            Already have a account? 
+            <a href="third.html#open-login">Log in</a>
+        </div>
+
+        <div class="or-divider">
+            <span>— OR —</span>
+        </div>
+
+        <button class="google-btn" onclick="googleSignIn()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48px" height="48px">
+                <path fill="#fbc02d" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/>
+                <path fill="#e53935" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/>
+                <path fill="#4caf50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/>
+                <path fill="#1565c0" d="M43.611,20.083L43.595,20L42,20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
+            </svg>
+            Sign up with Google
+        </button>
+
+        <div class="attribution">
+            <a href="https://www.flaticon.com/free-icons/google" title="google icons">Terms & Conditions Applied</a>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div class="loading-text">Creating your account...</div>
+    </div>
+
+    <script>
+        const passwordInput = document.getElementById('passwordInput');
+        const togglePassword = document.getElementById('togglePassword');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+
+        // Password toggle
+        togglePassword.addEventListener('click', () => {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                togglePassword.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                togglePassword.textContent = '👁️';
+            }
+        });
+
+        // Create Account Function - Now saves login data
+async function createAccount() {
+    const name = document.getElementById("fullName").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("passwordInput").value;
+
+    if (!name || !email || !password) {
+        alert("Fill all fields");
+        return;
+    }
+
+    try {
+        const res = await fetch("http://localhost:5678/webhook-test/signup", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ name, email, password })
+        });
+
+        const data = await res.json();
+
+        if (data.status === "created") {
+            alert("✅ Account created!");
+            window.location.href = "third.html";
+        } 
+        else if (data.status === "already_exists") {
+            alert("❌ User already exists");
+        }
+
+    } catch (err) {
+        console.error(err);
+        alert("Server error");
+    }
+}
+
+      
+        
+
+        // Google Sign Up (Demo)
+        function googleSignIn() {
+            const fullName = "Google User";
+            const email = "user@gmail.com";
+            const initial = "G";
+
+            localStorage.setItem('techcare_isLoggedIn', 'true');
+            localStorage.setItem('techcare_userInitial', initial);
+            localStorage.setItem('techcare_fullName', fullName);
+            localStorage.setItem('techcare_email', email);
+
+            loadingOverlay.style.display = 'flex';
+            setTimeout(() => {
+                window.location.href = 'third.html';
+            }, 1200);
+        }
+    </script>
+</body>
+</html>
