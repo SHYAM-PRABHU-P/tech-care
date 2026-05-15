@@ -1,0 +1,149 @@
+{
+  "name": "login",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "login-check",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        -32
+      ],
+      "id": "6d2db0ce-d132-47a3-bf91-503a286d3e9f",
+      "name": "Webhook",
+      "webhookId": "da5fb74f-a938-42f7-91b5-d4be5604f8bf"
+    },
+    {
+      "parameters": {
+        "jsCode": "const rows = items;\nconst inputEmail = $json.email;\nconst inputPassword = $json.password;\n\nlet found = false;\n\nfor (let row of rows) {\n    if (\n        row.json.Email === inputEmail &&\n        row.json.Password === inputPassword\n    ) {\n        found = true;\n        break;\n    }\n}\n\nreturn [\n  {\n    json: {\n      status: found ? \"not_found\" : \"exists\"\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        0
+      ],
+      "id": "b1763338-b28a-465e-9a88-4a28c343644f",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"{{$json[\"status\"]}}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        672,
+        0
+      ],
+      "id": "a53a9921-da23-4219-8ea3-f890c0f779f5",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1AtZPLbSlm5BvNCZyrQ6raxQsmEwx7edFpzibyqWZUY8",
+          "mode": "list",
+          "cachedResultName": "login/sign",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1AtZPLbSlm5BvNCZyrQ6raxQsmEwx7edFpzibyqWZUY8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1AtZPLbSlm5BvNCZyrQ6raxQsmEwx7edFpzibyqWZUY8/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Name",
+              "lookupValue": "={{ $json.body.name }}"
+            },
+            {
+              "lookupColumn": "Email",
+              "lookupValue": "={{ $json.body.email }}"
+            },
+            {
+              "lookupColumn": "Password",
+              "lookupValue": "={{ $json.body.password }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        -16
+      ],
+      "id": "f1157f73-98ef-4d36-b685-b7e2368005ab",
+      "name": "Get row(s) in sheet1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "whYUUw3G8qWtr7wT",
+          "name": "Google Sheets account 3"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "62421d08-b82c-4c1a-8a7a-909a1259e7b8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cee8a48f63fdcf97c2af878c70caaf364f87771cda12b2454931f1136ac7f4c1"
+  },
+  "id": "dvVWqTGAgxyt31lY",
+  "tags": []
+}
