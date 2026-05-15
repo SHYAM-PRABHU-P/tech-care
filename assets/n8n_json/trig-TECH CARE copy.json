@@ -1,0 +1,173 @@
+{
+  "name": "trig-TECH CARE copy",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "loginlocation",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -432,
+        -128
+      ],
+      "id": "a9b0d0fc-4884-4ca7-9014-389d8b2ee002",
+      "name": "Webhook",
+      "webhookId": "c11fdff0-6680-46fb-82b0-d5fe0342c2f0"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "LiOwLDq4eie6DsAi",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/LiOwLDq4eie6DsAi",
+          "cachedResultName": "TECH_CARE copy"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": "={\n \n  \n  \"mobile_type\": \"={{ $json.mobile_type }}\",\n \"email\": \"={{ $json.email }}\",\n  \"problem\": \"={{ $json.problem }}\",\n  \"location\": \"={{$json.location}}\"\n}"
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        -80
+      ],
+      "id": "7f1d60f8-51cc-464b-8b62-c7f6ff27515e",
+      "name": "Call 'TECH_CARE copy'",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"respondWith\": \"json\",\n  \"responseBody\": \"={{ $json }}\"\n}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "={\n  \"Access-Control-Allow-Origin\": \"*\",\n  \"Access-Control-Allow-Methods\": \"GET, POST, OPTIONS\",\n  \"Access-Control-Allow-Headers\": \"Content-Type\"\n}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        480,
+        -80
+      ],
+      "id": "90383122-ed11-422c-9a7c-bcb4da349c88",
+      "name": "Respond to Webhook",
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "11ae9154-ccf9-4b97-93bb-0ccd412983bd",
+              "name": "mobile_type",
+              "value": "={{ $json.body.mobile_type }}",
+              "type": "string"
+            },
+            {
+              "id": "e1574d36-3d96-4d34-90f4-5228605726be",
+              "name": "email",
+              "value": "={{ $json.body.email }}",
+              "type": "string"
+            },
+            {
+              "id": "42152f69-0a56-49e7-a72b-e190d140988f",
+              "name": "problem",
+              "value": "={{ $json.body.problem }}",
+              "type": "string"
+            },
+            {
+              "id": "77946ef6-6a61-4cb7-9959-cbd80d467bf9",
+              "name": "location",
+              "value": "={{ $json.body.location }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -176,
+        -128
+      ],
+      "id": "2d4f6bbb-a052-4b11-88a5-9ae2e3a39905",
+      "name": "Edit Fields",
+      "alwaysOutputData": false
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'TECH_CARE copy'": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Call 'TECH_CARE copy'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "28a37a61-bd78-4af9-8067-0aa546b14af5",
+  "meta": {
+    "instanceId": "cee8a48f63fdcf97c2af878c70caaf364f87771cda12b2454931f1136ac7f4c1"
+  },
+  "id": "SasOn56V9jLe5QNy",
+  "tags": []
+}
