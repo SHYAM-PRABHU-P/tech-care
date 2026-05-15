@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TECH CARE - Repair Shops Near You</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: white;
+    min-height: 100vh;
+}
+
+.video-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+}
+
+.header {
+    background: rgba(15, 23, 42, 0.95);
+    padding: 25px 40px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo { width: 45px; height: 45px; }
+
+.header-text {
+    font-size: 1.8rem;
+}
+
+.main-container {
+    display: flex;
+    max-width: 1400px;
+    margin: 40px auto;
+    padding: 0 20px;
+    gap: 30px;
+}
+
+.shops-list { flex: 1; }
+
+.page-title {
+    font-size: 2.4rem;
+    color: black;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 25px;
+}
+
+.shop-card {
+    background: white;
+    color: black;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 15px;
+    display: flex;
+    gap: 15px;
+}
+
+.shop-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+}
+
+.view-map-btn {
+    background: orange;
+    border: none;
+    padding: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.map-box {
+    width: 500px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Background -->
+<video class="video-bg" autoplay loop muted>
+    <source src="assets/videos/background-video3.mp4" type="video/mp4">
+</video>
+
+<!-- Header -->
+<div class="header">
+    <img src="https://i.imgur.com/9NUtz.png" class="logo">
+    <div class="header-text">TECH CARE</div>
+</div>
+
+<div class="main-container">
+
+    <!-- Shops -->
+    <div class="shops-list">
+        <h1 class="page-title" id="page-title">Loading...</h1>
+        <p class="subtitle" id="subtitle">Fetching shops...</p>
+
+        <div id="shops-container"></div>
+    </div>
+
+    <!-- Map -->
+    <div class="map-box">
+        <img src="assets/images/karur-map.png" width="100%">
+    </div>
+
+</div>
+
+<script>
+
+// ================= FETCH DATA FROM N8N =================
+async function fetchShops() {
+    try {
+        const res = await fetch("http://localhost:5678/webhook-test/loginlocation", {
+            method: "POST",   // 🔥 IMPORTANT
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                test: "getShops" // optional (depends on your workflow)
+            })
+        });
+
+        const data = await res.json();
+
+        // ✅ Your data is already array → return directly
+        return data;
+
+    } catch (err) {
+        console.error(err);
+        alert("Error loading shops");
+        return [];
+    }
+}
+
+// ================= RENDER SHOPS =================
+function renderShops(shopsData) {
+    const container = document.getElementById('shops-container');
+    container.innerHTML = '';
+
+    document.getElementById('subtitle').textContent =
+        `Mobile phone repair • ${shopsData.length} shops found`;
+
+    shopsData.forEach((shop, index) => {
+
+        const img = `https://picsum.photos/100?random=${index}`;
+
+        const rating = shop.RATING ?? 0;
+const reviews = shop.REVIEWS ? `(${shop.REVIEWS})` : "(0)";
+
+        const cardHTML = `
+            <div class="shop-card">
+                <img src="${img}" class="shop-image">
+
+                <div class="shop-info">
+                    <div class="shop-name">${shop.SHOP_NAME || "No Name"}</div>
+                    
+                    <div class="rating">
+                        ⭐ ${rating} ${reviews}
+                    </div>
+
+                    <div class="shop-address">${shop.ADDRESS || "No Address"}</div>
+                </div>
+
+                <button class="view-map-btn" onclick="openMap('${shop.MAP_LINK}')">
+                    View on Google Maps
+                </button>
+            </div>
+        `;
+
+        container.innerHTML += cardHTML;
+    });
+}
+
+// ================= OPEN MAP =================
+function openMap(link) {
+    if (link && link !== "N/A") {
+        window.open(link, "_blank");
+    } else {
+        alert("Map not available");
+    }
+}
+
+// ================= INIT =================
+async function init() {
+
+    const shops = JSON.parse(localStorage.getItem("shopsData")) || [];
+
+    console.log("Loaded shops:", shops);
+
+    if (shops.length === 0) {
+        document.getElementById("page-title").textContent = "No Shops Found";
+        document.getElementById("subtitle").textContent = "Try again";
+        return;
+    }
+
+    document.getElementById("page-title").textContent =
+        "Repair Shops Near You";
+
+    renderShops(shops);
+}
+
+window.onload = init;
+
+</script>
+
+</body>
+</html>
