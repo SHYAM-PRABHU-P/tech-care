@@ -1,0 +1,148 @@
+{
+  "name": "My workflow 15",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "login-check",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "2d7cf019-daea-41b9-9ba9-d61db89dbc63",
+      "name": "Webhook",
+      "webhookId": "da5fb74f-a938-42f7-91b5-d4be5604f8bf"
+    },
+    {
+      "parameters": {
+        "jsCode": "const rows = items;\nconst inputEmail = $json.email;\nconst inputPassword = $json.password;\n\nlet found = false;\n\nfor (let row of rows) {\n    if (\n        row.json.Email === inputEmail &&\n        row.json.Password === inputPassword\n    ) {\n        found = true;\n        break;\n    }\n}\n\nreturn [\n  {\n    json: {\n      status: found ? \"exists\" : \"not_found\"\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        368,
+        0
+      ],
+      "id": "55abfe05-82c0-46b8-885a-afba800225dd",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={\n  \"status\": {{$json[\"status\"]}}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        528,
+        0
+      ],
+      "id": "20ff8f6b-ac1a-4c71-916a-093be9d66bb2",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1QeWcb2Ww02cqyMGO76nlXYX7qJMrFoyBZjpJWsvVisE",
+          "mode": "list",
+          "cachedResultName": "googlen8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QeWcb2Ww02cqyMGO76nlXYX7qJMrFoyBZjpJWsvVisE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QeWcb2Ww02cqyMGO76nlXYX7qJMrFoyBZjpJWsvVisE/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Name",
+              "lookupValue": "={{ $json.body.name }}"
+            },
+            {
+              "lookupColumn": "Email",
+              "lookupValue": "={{ $json.body.email }}"
+            },
+            {
+              "lookupColumn": "Password",
+              "lookupValue": "={{ $json.body.password }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "173522d5-abf3-4751-9565-e8dfbd76d08b",
+      "name": "Get row(s) in sheet",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "KpHWdaOIg9liwq5u",
+          "name": "TechCare Google Sheets"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "2a5b1256-2dc3-4f78-9cb4-5f7e945f46b0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1a88d506bffd573182d6ef9564979205ee4042cf51999a87818cb38120661047"
+  },
+  "id": "6S6NDSjkXuBzG5EZ",
+  "tags": []
+}
