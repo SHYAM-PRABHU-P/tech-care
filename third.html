@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TECH CARE - Services</title>
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            min-height: 100vh;
+            background: linear-gradient(rgba(10, 31, 61, 0.85), rgba(15, 23, 42, 0.9)),
+                        url('e24d4b7bae5d6d28ca9e1638f92ade0e.jpg') center/cover no-repeat fixed;
+            overflow: hidden;
+        }
+
+        .header {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo { width: 45px; height: 45px; }
+
+        .header-text {
+            font-size: 1.8rem;
+            font-weight: 200;
+            letter-spacing: 1px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .login-btn {
+            background: #f59e0b;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: #f59e0b;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .hero-text {
+            text-align: center;
+            font-size: 2.85rem;
+            font-weight: 700;
+            margin: 50px 0 35px;
+            padding: 0 20px;
+            margin-bottom: 80px;
+            font-family: "Cooper Black", "Luckiest Guy", serif;
+        }
+
+       
+
+        .search-container { display: flex; justify-content: center; padding: 0 40px; margin-bottom: 110px; }
+
+        /* GEMINI BOX WITH ANIMATION */
+        .gemini-box {
+            background: rgba(255,255,255,0.95);
+            color: #1e2937;
+            border-radius: 9999px;
+            padding: 12px 24px;
+            width: 680px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            min-height: 56px;
+            max-height: 180px;
+            transition: all 0.4s ease;           /* Smooth animation */
+        }
+
+        .gemini-box textarea {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 1.35rem;
+            line-height: 1.90;
+            resize: none;                    /* ← Removed up/down arrows */
+            overflow-y: auto;
+            max-height: 140px;
+            padding: 2px 0;
+            font-family: 'Times New Roman', Times, serif;
+            font-weight: 300;
+        }
+
+        .icons-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 2px;
+        }
+
+        .icons-container button {
+            background: none;
+            border: none;
+            font-size: 1.65rem;
+            cursor: pointer;
+        }
+
+        .send-btn {
+            background: #f59e0b;
+            color: rgb(17, 1, 1);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.45rem;
+            cursor: pointer;
+        }
+
+        /* GOOGLE-STYLE PROFILE POPUP */
+        .profile-popup {
+            position: absolute;
+            top: 72px;
+            right: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            width: 300px;
+            overflow: hidden;
+            display: none;
+            z-index: 2000;
+        }
+        .profile-popup.show { display: block; }
+
+        .popup-header {
+            background: #0a0101;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 16px;
+        }
+        .popup-header button {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.4rem;
+            cursor: pointer;
+        }
+        .popup-header .avatar {
+            width: 32px; height: 32px;
+            background: #f59e0b;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .popup-body {
+            background: #0f0e0e5e;
+            color: white;
+            padding: 20px;
+        }
+        .popup-body .google-account {
+            font-size: 0.95rem;
+            color: #000000;
+            margin-bottom: 4px;
+        }
+        .popup-body .name {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+        .popup-body .email {
+            font-size: 1rem;
+            color: #090a0a;
+        }
+
+        .logout-btn {
+            margin: 20px 16px 16px;
+            background: #0bc2f5;
+            color: #110101;
+            border: none;
+            padding: 12px;
+            width: calc(100% - 22px);
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        /* Camera Modal */
+        .camera-modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        /* Transparent Login / Info Modal */
+        /* Modals */
+       /* Modal - Click background to close */
+       /* Scrolling Districts List - Matches your screenshot */
+.modal-dropdown-list {
+    max-height: 320px;           /* Tall enough to scroll */
+    overflow-y: auto;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    margin-top: 8px;
+    padding: 8px 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Nice clean list items */
+.district-item {
+    padding: 12px 20px;
+    color: #333;
+    cursor: pointer;
+    font-size: 1.05rem;
+}
+
+.district-item:hover {
+    background: #f0f4ff;
+}
+
+/* Optional: nicer scrollbar */
+.modal-dropdown-list::-webkit-scrollbar {
+    width: 6px;
+}
+.modal-dropdown-list::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+        .modal {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            color: #111;
+            width: 100%;
+            max-width: 520px;
+            border-radius: 24px;
+            padding: 40px 35px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .modal-content h2 {
+            font-size: 1.65rem;
+            margin-bottom: 28px;
+            font-weight: 700;
+        }
+        .modal-input {
+            width: 100%;
+            padding: 16px;
+            margin-bottom: 18px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            background: #f8f9fa;
+        }
+        .modal-btn {
+            background: #facc15;
+            color: #111;
+            border: none;
+            padding: 16px;
+            width: 100%;
+            border-radius: 50px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin: 12px 0 22px;
+        }
+        .create-link { color: #ef4444; text-decoration: none; font-weight: 600; }
+        .or-divider { margin: 22px 0; color: #666; font-size: 0.95rem; }
+        .google-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: white;
+            border: 1px solid #ddd;
+            padding: 14px;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+        }
+        /* Cards */
+        .cards-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 20px 80px;
+            display: flex;
+            gap: 140px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        @media (min-width: 1100px) { .cards-container { gap: 80px; } }
+
+        .card {
+            background: rgba(255,255,255,0.97);
+            color: #111;
+            border-radius: 20px;
+            padding: 32px 32px 20px 32px;
+            width: 100%;
+            max-width: 570px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            min-height: 480px;
+        }
+
+        .card-title { font-size: 1.45rem; font-weight: 700; margin-bottom: 8px; }
+        .card-subtitle { font-size: 1rem; color: #555; margin-bottom: 18px; }
+
+        .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
+        .tag { background: #e2e8f0; color: #334155; font-size: 0.85rem; padding: 6px 16px; border-radius: 50px; font-weight: 500; }
+
+        .product { flex: 1; display: flex; align-items: center; gap: 25px; margin-bottom: 30px; }
+        .product img { width: 165px; border-radius: 14px; }
+
+        .brand-badge {
+            background: #10b981;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .explore-btn {
+            background: #f59e0b;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: auto;
+            transition: all 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo-container">
+            <img src="https://i.imgur.com/9NUtz.png" alt="Logo" class="logo">
+            <div class="header-text">TECH CARE</div>
+        </div>
+
+        <div class="nav-right" id="navRight">
+            <!-- Login button or Avatar will be added by JS -->
+        </div>
+    </div>
+
+    <!-- Headline -->
+    <h1 class="hero-text">Hey Buddy, Tell Me you Problem!</h1>
+
+    <!-- Single Gemini-style Input Box -->
+   <!-- Search Box with Animation -->
+    <div class="search-container">
+        <div class="gemini-box">
+            <textarea id="problemInput" rows="1" placeholder="Describe your problem or upload photo"></textarea>
+            <div class="icons-container">
+                <button onclick="openCamera()" style="font-size:1.65rem;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+</svg></button>
+                <button onclick="sendProblem()" class="send-btn">➤</button>
+            </div>
+        </div>
+    </div>
+    <!-- Live Camera Modal -->
+    <div class="camera-modal" id="cameraModal">
+        <div class="camera-content">
+            <video id="liveVideo" autoplay playsinline></video>
+            <div class="camera-btns">
+                <button onclick="takePhoto()" style="background:#0b8cf5;color:white;padding:12px 30px;border-radius:50px;font-size:1.1rem;">📸 Take Photo</button>
+                <button onclick="closeCamera()" style="background:#cf0909ea;color:white;padding:12px 30px;border-radius:50px;font-size:1.1rem;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+   <!-- Login Modal (NEW DESIGN) -->
+   <div class="modal" id="loginModal" onclick="if(event.target === this) hideModal('loginModal')">
+        <div class="modal-content" onclick="event.stopImmediatePropagation()">
+            <h2>LOGIN INTO ACCOUNT</h2>
+            <input type="text" id="loginName" class="modal-input" placeholder="Enter your Name here">
+            <input type="email" id="loginEmail" class="modal-input" placeholder="Enter your Email here">
+            <input type="password" id="loginPassword" class="modal-input" placeholder="Enter your Password here">
+            
+            <button class="modal-btn" onclick="performLogin()">LOGIN</button>
+            
+            <p>Don't have a account? 
+                <a href="second.html" class="create-link">Create Account</a>
+            </p>
+            
+            <div class="or-divider">– OR –</div>
+            
+            <button class="google-btn" onclick="performLogin()">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" width="22" height="22" alt="Google">
+                Sign up with Google
+            </button>
+        </div>
+    </div>
+    <div class="profile-popup" id="profilePopup">
+        <div class="popup-header">
+            <button onclick="toggleProfilePopup()">🔗</button>
+            <button onclick="toggleProfilePopup()">⋯</button>
+            <div class="avatar" id="popupAvatar">S</div>
+        </div>
+        <div class="popup-body">
+            <div class="google-account">Google Account</div>
+            <div class="name" id="popupName"></div>
+            <div class="email" id="popupEmail"></div>
+        </div>
+        <button class="logout-btn" onclick="logout()">Log out</button>
+    </div>
+ <!-- Enhanced Almost Done Modal with Scrolling Districts -->
+<div class="modal" id="infoModal" onclick="if(event.target === this) hideModal('infoModal')">
+    <div class="modal-content" onclick="event.stopImmediatePropagation()">
+        
+        <h2>Almost Done!</h2>
+
+        <!-- Name -->
+        <input type="text" id="modalName" class="modal-input" placeholder="Brand Name">
+
+        <!-- Location + Scrolling Districts -->
+        <div class="modal-location-dropdown">
+            <input type="text" id="modalLocationInput" class="modal-input" placeholder="Location" autocomplete="off">
+            
+            <!-- SCROLLING LIST -->
+            <div class="modal-dropdown-list" id="modalDistrictList"></div>
+        </div>
+
+        <button class="modal-btn" onclick="submitModal()">Submit Request</button>
+    </div>
+</div>
+
+    <!-- Cards -->
+    <div class="cards-container">
+        <div class="card" id="laptopCard">
+            <div class="card-title">LAPTOPS</div>
+            <div class="card-subtitle">All Major Brands Serviced</div>
+            <div class="tags"><span class="tag">SCREEN</span><span class="tag">BATTERY</span><span class="tag">KEYBOARD</span><span class="tag">MORE</span></div>
+            <div class="product" id="laptopProduct"></div>
+            <button class="explore-btn">Explore</button>
+        </div>
+
+        <div class="card" id="mobileCard">
+            <div class="card-title">Mobiles</div>
+            <div class="card-subtitle">All Major Brands Serviced</div>
+            <div class="tags"><span class="tag">SCREEN</span><span class="tag">BATTERY</span><span class="tag">MOTHER BOARD</span><span class="tag">MORE</span></div>
+            <div class="product" id="mobileProduct"></div>
+            <button class="explore-btn">Explore</button>
+        </div>
+    </div>
+
+<script>
+
+let isLoggedIn = false;
+let userInitial = 'S';
+let userFullName = '';
+let userEmail = '';
+let stream = null;
+
+// ==================== DISTRICTS ====================
+const tamilNaduDistricts = [
+    "Chennai","Coimbatore","Madurai","Tiruchirappalli","Salem",
+    "Erode","Tirunelveli","Vellore","Thoothukudi","Thanjavur",
+    "Kanchipuram","Dindigul","Cuddalore","Kanyakumari","Namakkal",
+    "Karur","Krishnagiri","Dharmapuri","Ramanathapuram","Sivaganga"
+];
+
+const modalLocationInput = document.getElementById('modalLocationInput');
+const modalDistrictList = document.getElementById('modalDistrictList');
+
+function renderModalDistricts(filteredList) {
+    modalDistrictList.innerHTML = '';
+    filteredList.forEach(district => {
+        const div = document.createElement('div');
+        div.className = 'district-item';
+        div.textContent = district;
+        div.onclick = () => {
+            modalLocationInput.value = district;
+            modalDistrictList.classList.remove('show');
+        };
+        modalDistrictList.appendChild(div);
+    });
+}
+
+modalLocationInput.addEventListener('click', () => {
+    renderModalDistricts(tamilNaduDistricts);
+    modalDistrictList.classList.add('show');
+});
+
+modalLocationInput.addEventListener('input', () => {
+    const searchTerm = modalLocationInput.value.toLowerCase();
+    const filtered = tamilNaduDistricts.filter(d => d.toLowerCase().includes(searchTerm));
+    renderModalDistricts(filtered);
+    modalDistrictList.classList.add('show');
+});
+
+document.addEventListener('click', (e) => {
+    if (!modalLocationInput.contains(e.target) && !modalDistrictList.contains(e.target)) {
+        modalDistrictList.classList.remove('show');
+    }
+});
+
+// ==================== LOGIN ====================
+function loadLoginState() {
+    if (localStorage.getItem('techcare_isLoggedIn') === 'true') {
+        isLoggedIn = true;
+        userInitial = localStorage.getItem('techcare_userInitial') || 'S';
+        userFullName = localStorage.getItem('techcare_fullName') || '';
+        userEmail = localStorage.getItem('techcare_email') || '';
+    }
+    updateNavbar();
+}
+
+function updateNavbar() {
+    const navRight = document.getElementById('navRight');
+    navRight.innerHTML = isLoggedIn 
+        ? `<div class="user-avatar" onclick="toggleProfilePopup()">${userInitial}</div>` 
+        : `<button class="login-btn" onclick="showLoginModal()">Login</button>`;
+}
+
+function toggleProfilePopup() {
+    const popup = document.getElementById('profilePopup');
+    document.getElementById('popupName').textContent = userFullName || 'Not set';
+    document.getElementById('popupEmail').textContent = userEmail || 'Not set';
+    document.getElementById('popupAvatar').textContent = userInitial;
+    popup.classList.toggle('show');
+}
+
+function showLoginModal() { 
+    document.getElementById('loginModal').style.display = 'flex'; 
+}
+
+function hideModal(id) { 
+    document.getElementById(id).style.display = 'none'; 
+}
+
+// ==================== LOGIN API ====================
+async function performLogin() {
+    const name = document.getElementById('loginName').value.trim();
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+
+    if (!email || !password) {
+        alert("Please enter email and password");
+        return;
+    }
+
+    try {
+        const res = await fetch("http://localhost:5678/webhook-test/login-check", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                name, email, password,
+                date: new Date().toLocaleDateString(),
+                time: new Date().toLocaleTimeString()
+            })
+        });
+
+        const data = await res.json();
+
+        if (data.status === "exists") {
+            userFullName = name;
+            userEmail = email;
+            userInitial = name ? name[0].toUpperCase() : 'U';
+            isLoggedIn = true;
+
+            localStorage.setItem('techcare_isLoggedIn', 'true');
+            localStorage.setItem('techcare_userInitial', userInitial);
+            localStorage.setItem('techcare_fullName', name);
+            localStorage.setItem('techcare_email', email);
+
+            hideModal('loginModal');
+            updateNavbar();
+
+            alert("✅ Login successful!");
+        } else {
+            if (confirm("No account found. Create new account?")) {
+                window.location.href = "second.html";
+            }
+        }
+
+    } catch (err) {
+        console.error(err);
+        alert("Server error");
+    }
+}
+
+// ==================== LOGOUT ====================
+function logout() {
+    isLoggedIn = false;
+    localStorage.clear();
+    document.getElementById('profilePopup').classList.remove('show');
+    updateNavbar();
+}
+
+// ==================== PROBLEM ====================
+function sendProblem() {
+    const problemVal = document.getElementById('problemInput').value.trim();
+    if (problemVal === "") {
+        alert("Please describe your problem");
+        return;
+    }
+    if (!isLoggedIn) { showLoginModal(); return; }
+    document.getElementById('infoModal').style.display = 'flex';
+}
+
+// ==================== SUBMIT (MAIN FIX) ====================
+async function submitModal() {
+    const mobile_type = document.getElementById('modalName').value.trim();
+    const location = document.getElementById('modalLocationInput').value.trim();
+    const problem = document.getElementById('problemInput').value.trim();
+
+    if (!mobile_type || !location || !problem) {
+        alert("Please fill all fields");
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(async (position) => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+
+        try {
+            const res = await fetch("http://localhost:5678/webhook-test/loginlocation", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    mobile_type,
+                    email: userEmail || "N/A",
+                    
+                    problem,
+                    location,
+                    latitude,
+                    longitude,
+                    date: new Date().toLocaleDateString(),
+                    time: new Date().toLocaleTimeString()
+                })
+            });
+
+            const data = await res.json();
+            console.log("DATA FROM N8N:", data);
+            if (Array.isArray(data) && data.length > 0) {
+
+    // ✅ Save FULL response directly
+    localStorage.setItem("shopsData", JSON.stringify(data));
+
+    // ✅ Go to next page
+    window.location.href = "fourth.html";
+
+} else {
+    alert("❌ No shops found");
+}
+
+        } catch (err) {
+            console.error(err);
+            alert("Server error");
+        }
+
+    }, () => {
+        alert("Location permission denied ❌");
+    });
+}
+   // Auto-changing cards
+        const laptops = [{ img: "assets/images/lenovo.png", brand: "lenovo", model: "Lenovo LOQ", specs: "battery . screen . keyboard" },
+                         { img: "assets/images/acer.png", brand: "asus", model: "ASUS Vivobook", specs: "battery . screen . processor" },
+                         { img: "assets/images/hp.png", brand: "hp", model: "HP Pavilion", specs: "battery . screen . graphics" }];
+        const mobiles = [{ img: "assets/images/relme-16-pro-gray-removebg-preview.png", brand: "realme", model: "Realme P3 Pro 5G", specs: "battery . screen . display" },
+                         { img: "assets/images/galaxy-s24ultra-titaniumgray-device-spen-front-removebg-preview.png", brand: "samsung", model: "Samsung s24 utlta", specs: "battery . camera . display" },
+                         { img: "assets/images/redmi-16-pro-gray-removebg-preview.png", brand: "realme", model: "realme 16 pro", specs: "battery . performance . camera" }];
+
+        let laptopIndex = 0, mobileIndex = 0;
+        const laptopProduct = document.getElementById('laptopProduct');
+        const mobileProduct = document.getElementById('mobileProduct');
+
+        function updateLaptop() {
+            const item = laptops[laptopIndex];
+            laptopProduct.innerHTML = `<img src="${item.img}" alt="${item.model}"><div class="product-info"><span class="brand-badge">${item.brand}</span><h3>${item.model}</h3><p>${item.specs}</p></div>`;
+            laptopIndex = (laptopIndex + 1) % laptops.length;
+        }
+        function updateMobile() {
+            const item = mobiles[mobileIndex];
+            mobileProduct.innerHTML = `<img src="${item.img}" alt="${item.model}"><div class="product-info"><span class="brand-badge">${item.brand}</span><h3>${item.model}</h3><p>${item.specs}</p></div>`;
+            mobileIndex = (mobileIndex + 1) % mobiles.length;
+        }
+
+
+// ==================== CAMERA ====================
+function openCamera() {
+    const modal = document.getElementById('cameraModal');
+    const video = document.getElementById('liveVideo');
+
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(s => {
+            stream = s;
+            video.srcObject = stream;
+            modal.style.display = 'flex';
+        })
+        .catch(() => alert("Cannot access camera"));
+}
+
+function closeCamera() {
+    if (stream) stream.getTracks().forEach(track => track.stop());
+    document.getElementById('cameraModal').style.display = 'none';
+}
+
+// ==================== INIT ====================
+        loadLoginState();
+        updateLaptop();
+        updateMobile();
+        setInterval(() => { updateLaptop(); updateMobile(); }, 2000);
+
+</script>
+</body>
+</html>
