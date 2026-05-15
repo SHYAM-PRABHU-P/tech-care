@@ -1,0 +1,282 @@
+{
+  "name": "My 15",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "signup",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -176,
+        -16
+      ],
+      "id": "805ee5fe-63cd-47a4-b24a-16773ce82cca",
+      "name": "Webhook",
+      "webhookId": "3dd983e3-f372-41e6-8149-35c8e623e4f3"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1QeWcb2Ww02cqyMGO76nlXYX7qJMrFoyBZjpJWsvVisE",
+          "mode": "list",
+          "cachedResultName": "googlen8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QeWcb2Ww02cqyMGO76nlXYX7qJMrFoyBZjpJWsvVisE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QeWcb2Ww02cqyMGO76nlXYX7qJMrFoyBZjpJWsvVisE/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        48,
+        -16
+      ],
+      "id": "fa46cb15-82e7-4cf5-9457-9361d7c5d69d",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "KpHWdaOIg9liwq5u",
+          "name": "TechCare Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "aa7cfbeb-d43c-48c7-a5a0-41342a5aee5a",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "=new_user",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        496,
+        -16
+      ],
+      "id": "bace72eb-ad83-44d0-8e16-82e9e0f5a842",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"status\": $json.status } }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        720,
+        -112
+      ],
+      "id": "0737550d-5c12-45a5-9562-cef5e49b9116",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1QeWcb2Ww02cqyMGO76nlXYX7qJMrFoyBZjpJWsvVisE",
+          "mode": "list",
+          "cachedResultName": "googlen8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QeWcb2Ww02cqyMGO76nlXYX7qJMrFoyBZjpJWsvVisE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QeWcb2Ww02cqyMGO76nlXYX7qJMrFoyBZjpJWsvVisE/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $('Webhook').item.json.body.name }}",
+            "Password": "={{ $('Webhook').item.json.body.password }}",
+            "Email": "={{ $('Webhook').item.json.body.email }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Password",
+              "displayName": "Password",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        720,
+        80
+      ],
+      "id": "ea3a1b24-f3ac-48ff-8947-1912542c4955",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "KpHWdaOIg9liwq5u",
+          "name": "TechCare Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{ \"status\": \"created\" }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        944,
+        80
+      ],
+      "id": "1b9e6909-2746-42ed-aabc-86d920052e2d",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst inputEmail = $node[\"Webhook\"].json.body.email;\nif (!inputEmail) {\n    return [{ json: { status: \"error_no_email\" } }];\n}\n\nlet exists = false;\n\nfor (let row of items) {\n    if (\n        row.json.Email &&\n        row.json.Email.toLowerCase().trim() === inputEmail.toLowerCase().trim()\n    ) {\n        exists = true;\n        break;\n    }\n}\n\nreturn [\n  {\n    json: {\n      status: exists ? \"already_exists\" : \"new_user\"\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        272,
+        -16
+      ],
+      "id": "f2e242c7-dfb8-48b2-ac87-c1977dbc3f25",
+      "name": "Code in JavaScript1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "f750ecd3-5b4d-45ae-afdb-147e3ae09bc8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1a88d506bffd573182d6ef9564979205ee4042cf51999a87818cb38120661047"
+  },
+  "id": "kZyutqFmkwnWZX0L",
+  "tags": []
+}
