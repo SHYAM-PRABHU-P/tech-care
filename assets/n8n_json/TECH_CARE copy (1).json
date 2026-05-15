@@ -1,0 +1,141 @@
+{
+  "name": "TECH_CARE copy",
+  "nodes": [
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1JFmj2N-p9N_sMrvgTO5mLwwke42OJS_2ViOUHsbBeSM",
+          "mode": "list",
+          "cachedResultName": "TECH_CARE",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JFmj2N-p9N_sMrvgTO5mLwwke42OJS_2ViOUHsbBeSM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 226720218,
+          "mode": "list",
+          "cachedResultName": "https___www.google.com_search_q",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JFmj2N-p9N_sMrvgTO5mLwwke42OJS_2ViOUHsbBeSM/edit#gid=226720218"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -400,
+        128
+      ],
+      "id": "548e5eaf-0dba-41ac-a48b-85483ee16c69",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "whYUUw3G8qWtr7wT",
+          "name": "Google Sheets account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Get user inputs\nconst userLocation = ($json.location || \"\")\n  .toLowerCase()\n  .trim();\n\nconst userMobile = ($json.mobile_type || \"\")\n  .toLowerCase()\n  .trim();\n\nif (!userLocation) {\n  return [{ json: { error: \"Location is required\" } }];\n}\n\n// 2. Normalize function\nfunction normalize(text) {\n  return text\n    .toLowerCase()\n    .replace(/[^a-z0-9 ]/g, \" \")\n    .replace(/\\s+/g, \" \")\n    .trim();\n}\n\nconst cleanLocation = normalize(userLocation);\nconst cleanMobile = normalize(userMobile);\n\n// STEP 1 → LOCATION FILTER\nlet locationFiltered = items.filter(item => {\n  const sheetLocation = normalize(item.json[\"LOCATION\"] || \"\");\n\n  return (\n    sheetLocation.includes(cleanLocation) ||\n    cleanLocation.includes(sheetLocation)\n  );\n});\n\n// ❌ No location\nif (locationFiltered.length === 0) {\n  return [{ json: { error: \"No service centers found in this location\" } }];\n}\n\n// STEP 2 → BRAND FILTER\nlet brandFiltered = locationFiltered.filter(item => {\n  const brandText = normalize(item.json[\"BRAND\"] || \"\");\n  const userWords = cleanMobile.split(\" \");\n\n  return userWords.some(word =>\n    word.length > 2 && brandText.includes(word)\n  );\n});\n\n// STEP 3 → SORT ALL BY RATING\nlocationFiltered.sort((a, b) => {\n  const ratingA = parseFloat(a.json[\"RATING\"]) || 0;\n  const ratingB = parseFloat(b.json[\"RATING\"]) || 0;\n  return ratingB - ratingA;\n});\n\nbrandFiltered.sort((a, b) => {\n  const ratingA = parseFloat(a.json[\"RATING\"]) || 0;\n  const ratingB = parseFloat(b.json[\"RATING\"]) || 0;\n  return ratingB - ratingA;\n});\n\n// STEP 4 → BUILD FINAL LIST (MAX 5)\n\n// STEP 4 → BUILD FINAL LIST (MAX 5)\n\n// ✅ Step 4.1 → Start with brand matches\nlet finalList = [...brandFiltered];\n\n// ✅ Step 4.2 → Add NO BRAND rows\nif (finalList.length < 5) {\n  const noBrand = locationFiltered\n    .filter(item => {\n      const brandText = normalize(item.json[\"BRAND\"] || \"\");\n      return brandText === \"\" && !finalList.includes(item);\n    });\n\n  finalList = finalList.concat(noBrand);\n}\n\n// ✅ Step 4.3 → Add remaining (other brands if still needed)\nif (finalList.length < 5) {\n  const remaining = locationFiltered\n    .filter(item => !finalList.includes(item));\n\n  finalList = finalList.concat(remaining);\n}\n\n// STEP 5 → LIMIT TO 5\nfinalList = finalList.slice(0, 5);\n\n// STEP 6 → OUTPUT\nreturn finalList.map(item => ({\n  SHOP_NAME: item.json[\"SHOP_NAME\"] || \"N/A\",\n  RATING: item.json[\"RATING\"] || \"N/A\",\n  REVIEWS: item.json[\"REVIEWS\"] || \"N/A\",\n  SERVICE_TYPE: item.json[\"SERVICE TYPE\"] || \"N/A\",\n  ADDRESS: item.json[\"ADDRESS\"] || \"N/A\",\n  CLOSE_TIME: item.json[\"CLOSE_TIME\"] || \"N/A\",\n  CONTACT: item.json[\"CONTACT\"] || \"N/A\",\n  MAP_LINK: item.json[\"MAP LINK\"] || \"#\"\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        304,
+        16
+      ],
+      "id": "e1bd5667-df72-49f9-a5ac-9b9804901ec4",
+      "name": "Code in JavaScript",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "inputSource": "jsonExample",
+        "jsonExample": "{\n  \"mobile_type\": \"={{ $json.mobile_type }}\",\n \"email\": \"={{ $json.email }}\",\n  \"problem\": \"={{ $json.problem }}\",\n  \"location\": \"={{$json.location}}\"\n}"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -704,
+        -32
+      ],
+      "id": "f6fd396c-7ecb-4ac8-9ce8-fe83fb8c7c7d",
+      "name": "When Executed by Another Workflow",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -80,
+        0
+      ],
+      "id": "00a13cfe-d402-4d59-8988-af265345c642",
+      "name": "Merge"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        []
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "14eb7eb9-5f0c-42e0-b4c2-96d5c24aa039",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cee8a48f63fdcf97c2af878c70caaf364f87771cda12b2454931f1136ac7f4c1"
+  },
+  "id": "LiOwLDq4eie6DsAi",
+  "tags": []
+}
